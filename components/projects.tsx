@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Github } from "lucide-react"
 import { useScrollFade } from "@/hooks/use-scroll-animation"
+import Link from "next/link"
 
 export function Projects() {
   const { ref: headerRef, isVisible: headerVisible } = useScrollFade()
@@ -18,6 +19,8 @@ export function Projects() {
       category: "Personal Project",
       period: "May 2025 - June 2025",
       image: "/nft-marketplace-platform-with-ai-generation.jpg",
+      github: "https://github.com/Hsan003/prompt-craft-back",
+      demo: "",
     },
     {
       title: "Uptime Monitoring",
@@ -26,6 +29,8 @@ export function Projects() {
       category: "Academic Project",
       period: "January 2025 - February 2025",
       image: "/uptime-monitoring-dashboard-analytics.jpg",
+      github: "https://github.com/Hsan003/Monitoring.git",
+      demo: "",
     },
     {
       title: "CP Coach",
@@ -34,6 +39,8 @@ export function Projects() {
       category: "Academic Project",
       period: "October 2024 - November 2024",
       image: "/programming-coaching-platform-dashboard.jpg",
+      github: "https://github.com/Hsan003/CP-Online-Coach.git",
+      demo: "",
     },
     {
       title: "Takwira",
@@ -42,6 +49,8 @@ export function Projects() {
       category: "Academic Project",
       period: "Previous Project",
       image: "/football-field-booking-app-interface.jpg",
+      github: "https://github.com/Hsan003/Takwira.git",
+      demo: "",
     },
   ]
 
@@ -88,23 +97,55 @@ export function Projects() {
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      className="hover:animate-scale-in transition-all duration-300 bg-transparent"
-                    >
-                      <Github className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      className="hover:animate-scale-in transition-all duration-300 bg-transparent"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </Button>
+                    {/* GitHub Button */}
+                    {project.github ? (
+                      <Button
+                        asChild
+                        size="icon"
+                        variant="outline"
+                        className="hover:animate-scale-in transition-all duration-300 bg-transparent"
+                      >
+                        <a href={project.github} target="_blank" rel="noopener noreferrer">
+                          <Github className="w-4 h-4" />
+                        </a>
+                      </Button>
+                    ) : (
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        disabled
+                        className="opacity-50 cursor-not-allowed bg-transparent"
+                      >
+                        <Github className="w-4 h-4" />
+                      </Button>
+                    )}
+
+                    {/* Demo Button */}
+                    {project.demo ? (
+                      <Button
+                        asChild
+                        size="icon"
+                        variant="outline"
+                        className="hover:animate-scale-in transition-all duration-300 bg-transparent"
+                      >
+                        <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      </Button>
+                    ) : (
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        disabled
+                        className="opacity-50 cursor-not-allowed bg-transparent"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </Button>
+                    )}
                   </div>
                 </div>
               </CardHeader>
+
               <CardContent>
                 <p className="text-muted-foreground mb-4 text-pretty">{project.description}</p>
                 <div className="flex flex-wrap gap-2">
