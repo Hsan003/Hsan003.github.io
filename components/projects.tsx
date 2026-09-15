@@ -3,56 +3,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Github } from "lucide-react"
+import { ExternalLink, Github, BookOpen } from "lucide-react"
 import { useScrollFade } from "@/hooks/use-scroll-animation"
 import Link from "next/link"
+import { projects } from "@/data/projects"
 
 export function Projects() {
   const { ref: headerRef, isVisible: headerVisible } = useScrollFade()
   const { ref: projectsRef, isVisible: projectsVisible } = useScrollFade()
-
-  const projects = [
-    {
-      title: "PromptCraft",
-      description: "Developed an AI-powered NFT generation and trading platform with a real-time auction system",
-      technologies: ["Vue", "Velzon", "NestJS", "WebSocket", "GraphQL", "REST API", "SSE"],
-      category: "Personal Project",
-      period: "May 2025 - June 2025",
-      image: "/nft-marketplace-platform-with-ai-generation.jpg",
-      github: "https://github.com/Hsan003/prompt-craft-back",
-      demo: "",
-    },
-    {
-      title: "Uptime Monitoring",
-      description: "Built a real-time URL monitoring system with analytical dashboards",
-      technologies: ["ASP.NET Core", "Entity Framework", "SQL Server", "C#"],
-      category: "Academic Project",
-      period: "January 2025 - February 2025",
-      image: "/uptime-monitoring-dashboard-analytics.jpg",
-      github: "https://github.com/Hsan003/Monitoring.git",
-      demo: "",
-    },
-    {
-      title: "CP Coach",
-      description: "Developed a coaching platform for competitive programmers with progress tracking",
-      technologies: ["PHP", "MySQL", "JavaScript", "HTML/CSS"],
-      category: "Academic Project",
-      period: "October 2024 - November 2024",
-      image: "/programming-coaching-platform-dashboard.jpg",
-      github: "https://github.com/Hsan003/CP-Online-Coach.git",
-      demo: "",
-    },
-    {
-      title: "Takwira",
-      description: "Football field booking application with comprehensive administrative dashboard",
-      technologies: ["Symfony 6", "Doctrine ORM", "Twig", "MySQL", "API Platform"],
-      category: "Academic Project",
-      period: "Previous Project",
-      image: "/football-field-booking-app-interface.jpg",
-      github: "https://github.com/Hsan003/Takwira.git",
-      demo: "",
-    },
-  ]
 
   return (
     <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8">
@@ -70,7 +28,7 @@ export function Projects() {
         <div ref={projectsRef} className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((project, index) => (
             <Card
-              key={index}
+              key={project.slug}
               className={`overflow-hidden hover:shadow-lg transition-all duration-600 group hover:scale-105 transform ${
                 projectsVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
               }`}
@@ -82,6 +40,7 @@ export function Projects() {
                 <img
                   src={project.image || "/placeholder.svg"}
                   alt={project.title}
+                  onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg" }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
@@ -97,7 +56,6 @@ export function Projects() {
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    {/* GitHub Button */}
                     {project.github ? (
                       <Button
                         asChild
@@ -120,7 +78,6 @@ export function Projects() {
                       </Button>
                     )}
 
-                    {/* Demo Button */}
                     {project.demo ? (
                       <Button
                         asChild
@@ -159,6 +116,17 @@ export function Projects() {
                     </Badge>
                   ))}
                 </div>
+
+                {project.hasDetailPage && (
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <Button asChild size="sm" className="gap-2">
+                      <Link href={`/projects/${project.slug}`}>
+                        <BookOpen className="w-3.5 h-3.5" />
+                        View case study
+                      </Link>
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
           ))}

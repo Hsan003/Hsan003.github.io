@@ -63,20 +63,34 @@ export function Hero() {
                 Ellouze
               </span>
             </h1>
+
+            <div
+              className={`flex justify-center lg:justify-start mb-4 transition-all duration-1000 delay-150 ${
+                isVisible ? "animate-slide-up opacity-100" : "opacity-0"
+              }`}
+            >
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 text-sm font-medium">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                Open to end-of-year internship — Feb 2027
+              </span>
+            </div>
+
             <p
               className={`text-xl sm:text-2xl text-muted-foreground mb-4 transition-all duration-1000 delay-200 ${
                 isVisible ? "animate-slide-up opacity-100" : "opacity-0"
               }`}
             >
-              Software Engineering Student | Fullstack Developer
+              Fullstack Developer & AI Engineer — INSAT '26
             </p>
             <p
               className={`text-lg text-muted-foreground max-w-2xl mx-auto lg:mx-0 text-pretty transition-all duration-1000 delay-300 ${
                 isVisible ? "animate-slide-up opacity-100" : "opacity-0"
               }`}
             >
-              Passionate about technological innovation, I combine technical expertise in fullstack web development with
-              experience in leadership and event organization.
+              Final-year Software Engineering student at INSAT, Tunisia. I build fullstack
+              web applications and AI-powered platforms — from Kubernetes orchestration to
+              RAG-based contract analysis. I am open to an end-of-year internship opportunity
+              starting February 2027.
             </p>
           </div>
         </div>

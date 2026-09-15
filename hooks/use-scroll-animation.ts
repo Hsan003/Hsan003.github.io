@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 
 export function useScrollAnimation(threshold = 0.1, rootMargin = "0px") {
   const [isVisible, setIsVisible] = useState(false)
-  const ref = useRef<HTMLElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -26,7 +26,7 @@ export function useScrollAnimation(threshold = 0.1, rootMargin = "0px") {
 
 export function useScrollFade(threshold = 0.2) {
   const [isVisible, setIsVisible] = useState(false)
-  const ref = useRef<HTMLElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(

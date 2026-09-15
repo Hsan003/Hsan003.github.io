@@ -1,19 +1,21 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter, Dancing_Script } from "next/font/google"
+import { Ubuntu, Dancing_Script } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import { ThemeProvider } from "@/components/theme-provider"
 import "./globals.css"
 
-const inter = Inter({
+const ubuntu = Ubuntu({
   subsets: ["latin"],
+  weight: ["400", "700"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-ubuntu",
 })
 
-const dancingScript = Dancing_Script({
+const dancing = Dancing_Script({
   subsets: ["latin"],
+  weight: ["400"],
   display: "swap",
   variable: "--font-dancing",
 })
@@ -34,7 +36,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </head>
-      <body className={`font-sans ${inter.variable} ${dancingScript.variable} antialiased`}>
+      <body className={`font-sans ${ubuntu.variable} ${dancing.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <Suspense fallback={null}>{children}</Suspense>
         </ThemeProvider>

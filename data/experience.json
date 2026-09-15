@@ -1,0 +1,68 @@
+{
+  "experiences": [
+    {
+      "title": "AI Engineer Intern",
+      "company": "Applicare",
+      "type": "Internship",
+      "period": "Jun 2026 - Aug 2026",
+      "location": "Tunis, Tunisia",
+      "description": [
+        "Designed and built AskSahera, a bilingual (FR/EN) production RAG chatbot indexing ~100 source documents",
+        "Built a dual-source ingestion pipeline (PubMed XML + GROBID PDF parsing) with IMRAD-aware chunking and a sliding-window fallback, normalized into a shared schema",
+        "Developed the RAG backend in Express.js with Qdrant vector storage and OpenAI embeddings, using Claude for generation; integrated Cloudflare R2 for storage"
+      ],
+      "technologies": ["Express.js", "Qdrant", "OpenAI", "Claude", "Cloudflare R2", "RAG", "Python"]
+    },
+    {
+      "title": "Software Engineer Intern",
+      "company": "Mazdev",
+      "type": "Internship",
+      "period": "Jul 2025 - Sep 2025",
+      "location": "Tunis, Tunisia",
+      "description": [
+        "Engineered a production chatbot platform (YAML-configurable) used by non-technical users to create 20+ bot variants",
+        "Built a RAG engine (Pinecone) reaching 94% semantic accuracy across a large document set; optimized embeddings to cut latency 45%",
+        "Built an automated testing framework, cutting the QA cycle 50%"
+      ],
+      "technologies": ["Python", "FastAPI", "Pinecone", "RAG", "Testing", "Docker"]
+    },
+    {
+      "title": "Fullstack Developer",
+      "company": "Mazdev",
+      "type": "Part-time",
+      "period": "Mar 2025 - Jun 2025",
+      "location": "Tunis, Tunisia",
+      "description": [
+        "Architected an AI-powered legal contract review platform for 40+ enterprise clients, cutting analysis time 60%",
+        "Built a React/Next.js + FastAPI system processing 500+ contract reviews per month at production scale",
+        "Implemented a Docker CI/CD pipeline, cutting infra setup time 75%"
+      ],
+      "technologies": ["FastAPI", "React", "Next.js", "MongoDB", "Docker", "Git", "CI/CD"]
+    }
+  ],
+  "associativeExperience": [
+    {
+      "title": "Event Mission Leader",
+      "organization": "Junior Enterprise INSAT",
+      "period": "August 2024 - June 2025",
+      "description": "Organized the INSAT Enterprise Forum 6.0 (30+ companies, 1500+ participants)",
+      "achievements": [
+        "Coordinated and managed the organizing team",
+        "Led strategic planning, monitored activities, and managed documentation"
+      ],
+      "logoDark": "/je-insat-logo-dark.png",
+      "logoLight": "/je-insat-logo-light.png"
+    },
+    {
+      "title": "Operations Manager, WinterCup 7.0",
+      "organization": "ACM INSAT",
+      "period": "February 2025 - March 2025",
+      "description": "Managed the programming competition (150+ participants)",
+      "achievements": [
+        "Coordinated teams and event logistics",
+        "Implemented and monitored operational procedures"
+      ],
+      "logo": "/acm-logo.png"
+    }
+  ]
+}

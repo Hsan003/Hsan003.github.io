@@ -6,73 +6,19 @@ import { Calendar, MapPin } from "lucide-react"
 import { useScrollFade } from "@/hooks/use-scroll-animation"
 import { useTheme } from "next-themes"
 import Image from "next/image"
+import experienceData from "@/data/experience.json"
 
 export function Experience() {
   const { ref: headerRef, isVisible: headerVisible } = useScrollFade()
   const { ref: experiencesRef, isVisible: experiencesVisible } = useScrollFade()
   const { ref: volunteeringRef, isVisible: volunteeringVisible } = useScrollFade()
   const { theme } = useTheme()
-  const experiences = [
-    {
-      title: "Intern",
-      company: "Mazdev",
-      type: "Internship",
-      period: "July 2025 - September 2025",
-      location: "Tunis, Tunisia",
-      description: [
-        "Designed and developed a modular chatbot platform configurable via YAML, integrating external tools through function calling",
-        "Implemented a Retrieval-Augmented Generation (RAG) engine using Pinecone and text embedding models for semantic search and contextual reasoning",
-        "Added an automated testing mode with simulated scenarios to validate chatbot behavior",
-      ],
-      technologies: ["Python", "FastAPI", "Pinecone", "Text Embedding Models"],
-    },
-    {
-      title: "Fullstack Developer",
-      company: "Mazdev",
-      type: "Part-time",
-      period: "March 2024 - Current",
-      location: "Tunis, Tunisia",
-      description: [
-        "Developed an AI-powered platform for legal contract review assistance",
-        "Implemented tools for contract analysis and risk detection",
-      ],
-      technologies: ["FastAPI", "React", "Next.js", "MongoDB", "Docker", "Git"],
-    },
-    {
-      title: "Web Developer Intern",
-      company: "Steros",
-      type: "Internship",
-      period: "August 2024 (1 month)",
-      location: "Sfax, Tunisia",
-      description: [
-        "Developed a responsive showcase website for a new company service",
-        "Integrated interactive features to enhance user experience",
-      ],
-      technologies: ["HTML5", "CSS3", "JavaScript", "PHP", "Bootstrap", "MySQL"],
-    },
-  ]
+  const experiences = experienceData.experiences
 
-  const associativeExperience = [
-    {
-      title: "Event Mission Leader",
-      organization: "Junior Enterprise INSAT",
-      period: "August 2024 - June 2025",
-      description: "Organized the INSAT Enterprise Forum 6.0 (30+ companies, 1500+ participants)",
-      achievements: [
-        "Coordinated and managed the organizing team",
-        "Led strategic planning, monitored activities, and managed documentation",
-      ],
-      logo: theme === "dark" ? "/je-insat-logo-dark.png" : "/je-insat-logo-light.png",
-    },
-    {
-      title: "Operations Manager, WinterCup 7.0",
-      organization: "ACM INSAT",
-      period: "February 2025 - March 2025",
-      description: "Managed the programming competition (150+ participants)",
-      achievements: ["Coordinated teams and event logistics", "Implemented and monitored operational procedures"],
-      logo: "/acm-logo.png",
-    },
-  ]
+  const associativeExperience = experienceData.associativeExperience.map((item: any) => ({
+    ...item,
+    logo: item.logoDark && theme === "dark" ? item.logoDark : item.logoLight || item.logo,
+  }))
 
   return (
     <section id="experience" className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
@@ -181,7 +127,7 @@ export function Experience() {
                   <p className="text-sm text-muted-foreground mb-3">{exp.period}</p>
                   <p className="text-muted-foreground mb-4">{exp.description}</p>
                   <ul className="space-y-1">
-                    {exp.achievements.map((achievement, i) => (
+                    {exp.achievements.map((achievement: string, i: number) => (
                       <li key={i} className="text-sm text-muted-foreground">
                         • {achievement}
                       </li>

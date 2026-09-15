@@ -35,7 +35,7 @@ export function Contact() {
 
     emailjs
       .sendForm(
-        "service_4vtwibb", 
+        "service_9v7l6x8", 
         "template_79uqjfn",
         formElementRef.current,
         "io0XU9YlMuXAEP1vm"

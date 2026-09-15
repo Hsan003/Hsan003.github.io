@@ -4,17 +4,13 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Download, Sun, Moon } from "lucide-react"
 import { useTheme } from "next-themes"
+import navigationData from "@/data/navigation.json"
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const { theme, setTheme } = useTheme()
 
-  const navItems = [
-    { href: "#about", label: "About" },
-    { href: "#projects", label: "Projects" },
-    { href: "#experience", label: "Experience" },
-    { href: "#contact", label: "Contact" },
-  ]
+  const navItems = navigationData as { href: string; label: string }[]
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href)

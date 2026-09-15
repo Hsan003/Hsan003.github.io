@@ -1,0 +1,50 @@
+[
+  {
+    "title": "Frontend",
+    "icon": "🖥",
+    "skills": [
+      { "name": "React", "level": "Expert" },
+      { "name": "Next.js", "level": "Expert" },
+      { "name": "Vue.js", "level": "Advanced" },
+      { "name": "TypeScript", "level": "Advanced" },
+      { "name": "Tailwind CSS", "level": "Expert" },
+      { "name": "HTML5 / CSS3", "level": "Expert" }
+    ]
+  },
+  {
+    "title": "Backend",
+    "icon": "⚙️",
+    "skills": [
+      { "name": "Python", "level": "Expert" },
+      { "name": "FastAPI", "level": "Expert" },
+      { "name": "NestJS", "level": "Advanced" },
+      { "name": "ASP.NET Core", "level": "Intermediate" },
+      { "name": "PHP / Symfony", "level": "Advanced" },
+      { "name": "Node.js", "level": "Advanced" }
+    ]
+  },
+  {
+    "title": "Database & DevOps",
+    "icon": "🗄",
+    "skills": [
+      { "name": "MongoDB", "level": "Advanced" },
+      { "name": "MySQL / SQL Server", "level": "Advanced" },
+      { "name": "Docker", "level": "Advanced" },
+      { "name": "Kubernetes", "level": "Intermediate" },
+      { "name": "Git / GitHub", "level": "Expert" },
+      { "name": "CI/CD", "level": "Intermediate" }
+    ]
+  },
+  {
+    "title": "AI & Tooling",
+    "icon": "🧠",
+    "skills": [
+      { "name": "RAG Pipelines", "level": "Advanced" },
+      { "name": "Pinecone", "level": "Advanced" },
+      { "name": "Text Embedding", "level": "Advanced" },
+      { "name": "LLM Integration", "level": "Advanced" },
+      { "name": "Prometheus / Grafana", "level": "Intermediate" },
+      { "name": "WebSocket", "level": "Advanced" }
+    ]
+  }
+]

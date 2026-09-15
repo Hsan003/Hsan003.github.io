@@ -1,0 +1,248 @@
+[
+    {
+    "slug": "multi-tenant-ai-chatbot-widget",
+    "title": "Multi-Tenant AI Chatbot Widget",
+    "tagline": "A secure, embeddable AI chatbot for multi-tenant websites with strict domain validation and Shadow DOM isolation.",
+    "description": "A reusable chatbot widget designed for external client websites, built around single-script deployment, tenant isolation, and a lightweight integration flow.",
+    "technologies": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Hono",
+      "Supabase",
+      "Upstash Redis",
+      "PostgreSQL",
+      "Shadow DOM",
+      "Zod",
+      "Railway",
+      "Cloudflare Pages"
+    ],
+    "category": "Personal Project",
+    "period": "2025–2026",
+    "image": "/images/project-placeholder.jpg",
+    "github": "https://github.com/Hsan003/AI-Assistant-Backend",
+    "demo": "",
+    "hasDetailPage": true,
+    "heroSummary": "A production-focused AI chatbot widget built for secure client-side embedding across multiple tenant websites, with strict origin validation, isolated rendering, and a backend that keeps sensitive logic on the server.",
+    "highlights": [
+      "Single script tag deployment for fast merchant integration",
+      "Shadow DOM isolation to reduce styling conflicts and improve sandboxing",
+      "Strict domain validation to protect tenant boundaries",
+      "Backend-first security model with config and prompts kept off the client"
+    ],
+    "context": "This project addresses a common product problem: businesses want to add an AI assistant to external websites without exposing internal prompts, configuration, or tenant data. The widget needed to be easy to embed, safe to operate across different merchant domains, and lightweight enough to feel like a native part of the host site.\n\nThe result is a multi-tenant chatbot widget that can be dropped into a client site with a single script tag. It is designed around secure deployment, isolation between tenants, and a clear separation between public UI configuration and server-side business logic.",
+    "problem": "Build a reusable AI chatbot component that can be embedded on third-party websites while preserving tenant isolation, validating allowed domains, preventing style leakage, and keeping sensitive backend logic and data out of the browser.",
+    "architecture": [
+      "Single script-tag embed flow that loads the widget with a tenant-specific storeId",
+      "Shadow DOM rendering to isolate styles from the host page",
+      "Hono backend API for configuration and chat requests",
+      "Supabase-backed data layer for tenant records and operational data",
+      "Upstash Redis for caching, session handling, and rate limiting",
+      "Strict origin and domain validation before allowing chat interactions"
+    ],
+    "sections": [
+      {
+        "title": "Embed Flow",
+        "content": "Merchants integrate the widget through a single script tag that passes a store identifier. On load, the widget fetches only the safe UI configuration it needs, which keeps the integration simple while preserving the server-side boundary for sensitive data."
+      },
+      {
+        "title": "Tenant Isolation",
+        "content": "The system is built to prevent cross-tenant leakage by validating the request origin against an allowlist of domains and by keeping system prompts and sensitive business rules on the backend. The widget also renders inside a Shadow DOM to minimize CSS collisions with the host site."
+      },
+      {
+        "title": "Backend and Data Layer",
+        "content": "The backend is implemented with Hono and uses Supabase for persistent tenant data. Upstash Redis supports fast caching and operational controls such as session state and rate limiting, which helps keep the service responsive under normal widget traffic."
+      },
+      {
+        "title": "Deployment and Operations",
+        "content": "The architecture separates the frontend widget and backend API so they can be deployed independently. The widget is served from Cloudflare Pages, while the API runs on Railway, giving the project a straightforward production path with clear ownership of public assets versus server logic."
+      }
+    ],
+    "metrics": [
+      {
+        "label": "Bundle size",
+        "value": "384 KB"
+      },
+      {
+        "label": "Initial load target",
+        "value": "< 1s"
+      },
+      {
+        "label": "Config fetch timeout",
+        "value": "8s"
+      },
+      {
+        "label": "Chat request timeout",
+        "value": "30s"
+      },
+      {
+        "label": "Integration model",
+        "value": "Single script tag"
+      }
+    ],
+    "challenges": [
+      "Keeping the widget easy to embed without exposing sensitive tenant data — the solution was to move prompts, authorization checks, and server-side rules into the backend so the browser only receives safe configuration data.",
+      "Preventing cross-tenant access from unauthorized domains — the solution was to validate the request origin against each tenant’s allowed domain list before accepting chat traffic.",
+      "Avoiding CSS conflicts on arbitrary client websites — the solution was to render the widget in a Shadow DOM so its styles stay isolated from the host page.",
+      "Keeping the widget resilient under real-world network conditions — the solution was to add request timeouts, retry logic for config loading, runtime schema validation, and user-facing error handling."
+    ],
+    "learnings": [
+      "Client-embedded products need security boundaries that are clear both in code and in deployment.",
+      "A narrow public API and server-side validation make multi-tenant systems easier to reason about.",
+      "Shadow DOM is an effective tool for preserving UI consistency on untrusted host pages."
+    ]
+  },
+  {
+    "slug": "kubemind",
+    "title": "KubeMind",
+  "tagline": "Intelligent Kubernetes orchestration platform with predictive auto-scaling",
+  "description": "Final year project (PFE) — a full-stack platform for monitoring and managing Kubernetes clusters in real time. Integrates ML-based predictive auto-scaling, multi-cluster visibility, automated alerting, and an interactive workload visualization dashboard.",
+  "technologies": ["Kubernetes", "React", "FastAPI", "Python", "Prometheus", "Grafana", "Docker", "Helm", "PostgreSQL"],
+  "category": "Final Year Project",
+  "period": "February 2025 - June 2025",
+  "image": "/kubemind-platform.png",
+  "github": "https://github.com/Hsan003/kubemind",
+  "demo": "",
+  "hasDetailPage": true,
+  "context": "Kubernetes has become the de-facto standard for container orchestration, but its operational complexity — especially for multi-cluster environments — remains a significant challenge for engineering teams. Manual scaling decisions lead to either over-provisioning (wasted cost) or under-provisioning (degraded performance).",
+  "problem": "How do you build a system that gives operators a single pane of glass across multiple clusters, automates scaling decisions before incidents occur, and reduces mean time to detection (MTTD) for anomalies?",
+  "architecture": [
+    "React + TypeScript frontend with real-time WebSocket updates",
+    "FastAPI backend exposing a REST + WebSocket API",
+    "Prometheus scraping cluster metrics every 15 seconds",
+    "Python ML service (time-series forecasting) predicting load spikes 5 min ahead",
+    "Helm chart for one-command cluster deployment",
+    "PostgreSQL for historical metrics and alert history"
+  ],
+  "sections": [
+    {
+      "title": "Real-time monitoring",
+      "content": "Built a live dashboard showing CPU, memory, and network usage per pod/namespace using WebSocket streaming. Operators see cluster health change in real time without manual refresh."
+    },
+    {
+      "title": "Predictive auto-scaling",
+      "content": "Trained a lightweight LSTM model on historical Prometheus metrics to forecast resource demand 5 minutes ahead. The system triggers Horizontal Pod Autoscaler adjustments proactively, before load spikes hit."
+    },
+    {
+      "title": "Multi-cluster management",
+      "content": "Designed a namespace-isolated architecture allowing a single KubeMind instance to manage multiple clusters via kubeconfig context switching, with per-cluster RBAC."
+    },
+    {
+      "title": "Alerting engine",
+      "content": "Configurable threshold-based and anomaly-based alerts with webhook notifications. Alert history stored in PostgreSQL with full audit trail."
+    }
+  ],
+  "metrics": [
+    { "label": "Scaling reaction time", "value": "-5 min" },
+    { "label": "Dashboard refresh", "value": "< 1s" },
+    { "label": "Clusters managed", "value": "Multi" },
+    { "label": "Alert latency", "value": "< 3s" }
+  ],
+  "challenges": [
+    "Designing a ML model light enough to run alongside cluster workloads without adding meaningful overhead — solved by using a compressed LSTM with a 15-min rolling window instead of a full time-series database scan.",
+    "WebSocket state synchronization across multiple cluster contexts — solved by a per-cluster event bus with client-side reconciliation.",
+    "Making Helm deployment truly one-command for any cluster size — required extensive templating and conditional resource generation."
+  ],
+  "learnings": [
+    "Production Kubernetes internals — controllers, informers, admission webhooks",
+    "Time-series forecasting with LSTM on operational metrics",
+    "Designing for operator experience, not just functionality"
+  ]
+},
+{
+  "slug": "promptcraft",
+  "title": "PromptCraft",
+  "tagline": "AI-powered NFT generation and trading platform with real-time auctions",
+  "description": "A full-stack NFT marketplace where users generate unique digital art via AI prompts, then list or auction their creations in real time. Features a live bidding system, wallet integration, and a GraphQL API powering both the marketplace and the generation pipeline.",
+  "technologies": ["Vue.js", "Velzon", "NestJS", "WebSocket", "GraphQL", "REST API", "SSE", "Python", "PostgreSQL"],
+  "category": "Personal Project",
+  "period": "May 2025 - June 2025",
+  "image": "/nft-marketplace-platform-with-ai-generation.jpg",
+  "github": "https://github.com/Hsan003/prompt-craft-back",
+  "demo": "",
+  "hasDetailPage": true,
+  "context": "NFT marketplaces like OpenSea require users to bring pre-generated art. PromptCraft collapses the creation and trading workflow into a single platform — you describe what you want, the AI generates it, and you can immediately list it for sale or auction.",
+  "problem": "How do you build a system that keeps auction state perfectly synchronized across all connected bidders in real time, while handling the latency of AI image generation without blocking the user experience?",
+  "architecture": [
+    "Vue.js 3 + Composition API frontend with the Velzon admin template",
+    "NestJS backend with modular domain architecture (auth, NFTs, auctions, wallet)",
+    "GraphQL API for marketplace queries and mutations",
+    "WebSocket gateway for real-time auction events (new bids, countdown, sold)",
+    "Server-Sent Events (SSE) for AI generation progress streaming",
+    "Python microservice wrapping the image generation model",
+    "PostgreSQL with Prisma ORM for transactional integrity on bids"
+  ],
+  "sections": [
+    {
+      "title": "AI generation pipeline",
+      "content": "User submits a text prompt → NestJS sends it to the Python microservice → generation progress is streamed back via SSE so the user sees live updates → final image is stored and minted as an NFT record."
+    },
+    {
+      "title": "Real-time auction system",
+      "content": "Each auction room is a WebSocket namespace. Bids are validated server-side (minimum increment, wallet balance, auction active) before being broadcast. A countdown timer is synchronized server-side to prevent client-side manipulation."
+    },
+    {
+      "title": "GraphQL marketplace API",
+      "content": "All browsing, filtering, and NFT metadata queries go through GraphQL, enabling flexible front-end querying without over-fetching. Mutations (place bid, buy now, list item) go through REST for explicit error handling."
+    },
+    {
+      "title": "Wallet & ownership model",
+      "content": "Implemented a custodial wallet model for the MVP — each user has an on-platform balance. Transfers are atomic PostgreSQL transactions to prevent double-spend on concurrent bids."
+    }
+  ],
+  "metrics": [
+    { "label": "Generation latency", "value": "~8s" },
+    { "label": "Bid broadcast latency", "value": "< 100ms" },
+    { "label": "Concurrent auctions", "value": "Multi-room" },
+    { "label": "API type", "value": "GraphQL + REST" }
+  ],
+  "challenges": [
+    "Race conditions on concurrent bids — two users submitting within milliseconds. Solved with PostgreSQL row-level locking and a server-side bid queue per auction.",
+    "AI generation taking 8-15 seconds blocking UX — solved by SSE progress streaming so the user sees the image being built, not a spinner.",
+    "Keeping WebSocket auction state consistent when a user reconnects mid-auction — solved by replaying the last N events from a server-side event log on reconnect."
+  ],
+  "learnings": [
+    "Designing real-time systems with explicit consistency guarantees",
+    "SSE as a simpler alternative to WebSocket for unidirectional streaming",
+    "GraphQL schema design for a marketplace domain"
+  ]
+},
+{
+  "slug": "uptime-monitoring",
+  "title": "Uptime Monitoring",
+  "tagline": "Real-time URL monitoring with analytical dashboards",
+  "description": "Built a real-time URL monitoring system with analytical dashboards tracking uptime, response times, and incident history.",
+  "technologies": ["ASP.NET Core", "Entity Framework", "SQL Server", "C#"],
+  "category": "Academic Project",
+  "period": "January 2025 - February 2025",
+  "image": "/uptime-monitoring-dashboard-analytics.jpg",
+  "github": "https://github.com/Hsan003/Monitoring.git",
+  "demo": "",
+  "hasDetailPage": false
+},
+{
+  "slug": "cp-coach",
+  "title": "CP Coach",
+  "tagline": "Coaching platform for competitive programmers",
+  "description": "Developed a coaching platform for competitive programmers with progress tracking, problem recommendations, and performance analytics.",
+  "technologies": ["PHP", "MySQL", "JavaScript", "HTML/CSS"],
+  "category": "Academic Project",
+  "period": "October 2024 - November 2024",
+  "image": "/programming-coaching-platform-dashboard.jpg",
+  "github": "https://github.com/Hsan003/CP-Online-Coach.git",
+  "demo": "",
+  "hasDetailPage": false
+},
+{
+  "slug": "takwira",
+  "title": "Takwira",
+  "tagline": "Football field booking with admin dashboard",
+  "description": "Football field booking application with a comprehensive administrative dashboard, real-time availability, and online payment integration.",
+  "technologies": ["Symfony 6", "Doctrine ORM", "Twig", "MySQL", "API Platform"],
+  "category": "Academic Project",
+  "period": "2023 - 2024",
+  "image": "/football-field-booking-app-interface.jpg",
+  "github": "https://github.com/Hsan003/Takwira.git",
+  "demo": "",
+  "hasDetailPage": false
+}]

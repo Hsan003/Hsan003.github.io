@@ -1,0 +1,29 @@
+{
+  "intro": "I am a final-year Software Engineering student at the National Institute of Applied Sciences and Technology (INSAT) in Tunisia. I build fullstack web applications and AI-powered systems for real users, and I am open to an end-of-year internship opportunity starting February 2027.",
+  "highlights": [
+    {
+      "icon": "Code",
+      "title": "Frontend Development",
+      "description": "Building modern, responsive user interfaces",
+      "skills": ["React", "Vue.js", "Next.js", "JavaScript", "HTML5", "CSS3"]
+    },
+    {
+      "icon": "Server",
+      "title": "Backend Development",
+      "description": "Creating robust server-side applications",
+      "skills": ["FastAPI", "NestJS", "PHP", "ASP.NET Core", "Python"]
+    },
+    {
+      "icon": "Database",
+      "title": "Database & DevOps",
+      "description": "Managing data and deployment workflows",
+      "skills": ["MySQL", "MongoDB", "SQL Server", "Docker", "Git"]
+    },
+    {
+      "icon": "Cpu",
+      "title": "AI & Innovation",
+      "description": "Integrating artificial intelligence solutions",
+      "skills": ["Python", "RAG", "Pinecone", "Text Embedding", "WebSocket"]
+    }
+  ]
+}

@@ -2,41 +2,15 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Code, Users, Database, Server, Cpu } from "lucide-react"
+import { Code, Database, Server, Cpu } from "lucide-react"
 import { useScrollFade } from "@/hooks/use-scroll-animation"
+import aboutData from "@/data/about.json"
 
 export function About() {
   const { ref: sectionRef, isVisible: sectionVisible } = useScrollFade()
   const { ref: cardsRef, isVisible: cardsVisible } = useScrollFade()
 
-  const highlights = [
-    {
-      icon: Code,
-      title: "Frontend Development",
-      description: "Building modern, responsive user interfaces",
-      skills: ["React", "Vue.js", "Next.js", "JavaScript", "HTML5", "CSS3"],
-    },
-    {
-      icon: Server,
-      title: "Backend Development",
-      description: "Creating robust server-side applications",
-      skills: ["FastAPI", "NestJS", "PHP", "ASP.NET Core", "Python"],
-    },
-    {
-      icon: Database,
-      title: "Database & DevOps",
-      description: "Managing data and deployment workflows",
-      skills: ["MySQL", "MongoDB", "SQL Server", "Docker", "Git"],
-    },
-    {
-      icon: Cpu,
-      title: "AI & Innovation",
-      description: "Integrating artificial intelligence solutions",
-      skills: ["Python", "RAG", "Pinecone", "Text Embedding", "WebSocket"],
-    },
-  ]
-
-
+  const highlights = aboutData.highlights
 
   return (
     <section id="about" className="py-20 px-4 sm:px-6 lg:px-8">
@@ -48,15 +22,11 @@ export function About() {
           }`}
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-balance mb-6">About Me</h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto text-pretty">
-            I am a fourth-year Software Engineering student at the National Institute of Applied Sciences and Technology
-            (INSAT) in Tunisia. Passionate about technology and innovation, I combine technical expertise in fullstack
-            development with strong leadership skills gained through active participation in associative activities.
-          </p>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto text-pretty">{aboutData.intro}</p>
         </div>
 
         <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {highlights.map((item, index) => (
+          {highlights.map((item: any, index: number) => (
             <Card
               key={index}
               className={`hover:shadow-lg transition-all duration-500 hover:scale-105 transform ${
@@ -69,13 +39,17 @@ export function About() {
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 animate-pulse-glow">
-                    <item.icon className="w-6 h-6 text-primary" />
+                    {/* Map icon string to lucide component */}
+                    {item.icon === "Code" && <Code className="w-6 h-6 text-primary" />}
+                    {item.icon === "Server" && <Server className="w-6 h-6 text-primary" />}
+                    {item.icon === "Database" && <Database className="w-6 h-6 text-primary" />}
+                    {item.icon === "Cpu" && <Cpu className="w-6 h-6 text-primary" />}
                   </div>
                   <div className="flex-1">
                     <h3 className="font-semibold mb-2">{item.title}</h3>
                     <p className="text-sm text-muted-foreground mb-3 text-pretty">{item.description}</p>
                     <div className="flex flex-wrap gap-2">
-                      {item.skills.map((skill, i) => (
+                      {item.skills.map((skill: string, i: number) => (
                         <Badge
                           key={i}
                           variant="secondary"
