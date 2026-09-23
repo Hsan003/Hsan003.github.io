@@ -10,6 +10,7 @@ import { Navigation } from "@/components/navigation"
 export default function Home() {
   return (
     <main className="min-h-screen bg-background">
+      <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "7cb5258b844d4f3f90bfe227aaca3b50"}'></script>
       <Navigation />
       <Hero />
       <About />
