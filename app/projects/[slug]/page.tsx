@@ -40,7 +40,7 @@ export default function ProjectPage({ params }: Props) {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl font-bold mb-3">Interested in working together?</h2>
           <p className="text-muted-foreground mb-6">
-            I am open to an end-of-year internship opportunity starting February 2027.
+            I am open to an end-of-studies internship opportunity starting February 2027.
           </p>
           <div className="flex gap-3 justify-center flex-wrap">
             <a

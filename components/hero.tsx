@@ -71,7 +71,7 @@ export function Hero() {
             >
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 text-sm font-medium">
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                Open to end-of-year internship — Feb 2027
+                Open to end-of-studies internship — Feb 2027
               </span>
             </div>
 
@@ -80,7 +80,7 @@ export function Hero() {
                 isVisible ? "animate-slide-up opacity-100" : "opacity-0"
               }`}
             >
-              Fullstack Developer & AI Engineer — INSAT '26
+              Fullstack Developer & AI Engineer
             </p>
             <p
               className={`text-lg text-muted-foreground max-w-2xl mx-auto lg:mx-0 text-pretty transition-all duration-1000 delay-300 ${
@@ -89,7 +89,7 @@ export function Hero() {
             >
               Final-year Software Engineering student at INSAT, Tunisia. I build fullstack
               web applications and AI-powered platforms — from Kubernetes orchestration to
-              RAG-based contract analysis. I am open to an end-of-year internship opportunity
+              RAG-based contract analysis. I am open to an end-of-studies internship opportunity
               starting February 2027.
             </p>
           </div>

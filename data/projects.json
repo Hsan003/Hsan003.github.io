@@ -93,62 +93,97 @@
     ]
   },
   {
-    "slug": "kubemind",
-    "title": "KubeMind",
-  "tagline": "Intelligent Kubernetes orchestration platform with predictive auto-scaling",
-  "description": "Final year project (PFE) — a full-stack platform for monitoring and managing Kubernetes clusters in real time. Integrates ML-based predictive auto-scaling, multi-cluster visibility, automated alerting, and an interactive workload visualization dashboard.",
-  "technologies": ["Kubernetes", "React", "FastAPI", "Python", "Prometheus", "Grafana", "Docker", "Helm", "PostgreSQL"],
+  "slug": "kubemind",
+  "title": "KubeMind",
+  "tagline": "AI-Driven Kubernetes Incident Analysis & Observability Platform",
+  "description": "Final-year capstone project — an AI-powered platform that analyzes Kubernetes incidents by correlating cluster events, application logs, and resource metrics. Uses specialized AI agents to investigate failures, identify potential root causes, and generate structured incident reports and postmortems.",
+  "technologies": [
+    "Kubernetes",
+    "Python",
+    "FastAPI",
+    "Next.js",
+    "LangChain",
+    "LangGraph",
+    "Prometheus",
+    "Loki",
+    "Promtail",
+    "Kafka",
+    "MongoDB",
+    "Docker",
+    "Grafana"
+  ],
   "category": "Final Year Project",
-  "period": "February 2025 - June 2025",
+  "period": "2026",
   "image": "/kubemind-platform.png",
   "github": "https://github.com/Hsan003/kubemind",
   "demo": "",
   "hasDetailPage": true,
-  "context": "Kubernetes has become the de-facto standard for container orchestration, but its operational complexity — especially for multi-cluster environments — remains a significant challenge for engineering teams. Manual scaling decisions lead to either over-provisioning (wasted cost) or under-provisioning (degraded performance).",
-  "problem": "How do you build a system that gives operators a single pane of glass across multiple clusters, automates scaling decisions before incidents occur, and reduces mean time to detection (MTTD) for anomalies?",
+  "context": "Troubleshooting Kubernetes incidents often requires engineers to investigate events, application logs, and resource metrics across different observability tools. Connecting these signals manually can be time-consuming and makes identifying the root cause of failures more difficult.",
+  "problem": "How can AI agents correlate Kubernetes events, logs, and metrics to help engineers investigate incidents, identify relevant evidence, and produce actionable postmortem reports?",
   "architecture": [
-    "React + TypeScript frontend with real-time WebSocket updates",
-    "FastAPI backend exposing a REST + WebSocket API",
-    "Prometheus scraping cluster metrics every 15 seconds",
-    "Python ML service (time-series forecasting) predicting load spikes 5 min ahead",
-    "Helm chart for one-command cluster deployment",
-    "PostgreSQL for historical metrics and alert history"
+    "FastAPI backend for incident analysis and service orchestration",
+    "Kafka-based event pipeline using the kube-events topic",
+    "Prometheus for metrics collection and Loki with Promtail for log aggregation",
+    "Specialized AI agents for analyzing Kubernetes events, logs, and metrics",
+    "LangChain and LangGraph for agent orchestration, shared incident state, and cross-signal correlation",
+    "MongoDB for incident-related data and analysis results",
+    "Next.js dashboard for presenting incident investigations and reports",
+    "Docker and Minikube for containerized development and Kubernetes testing"
   ],
   "sections": [
     {
-      "title": "Real-time monitoring",
-      "content": "Built a live dashboard showing CPU, memory, and network usage per pod/namespace using WebSocket streaming. Operators see cluster health change in real time without manual refresh."
+      "title": "Kubernetes event pipeline",
+      "content": "Built an event-processing pipeline that captures Kubernetes events and publishes them to Kafka for downstream incident analysis. Tested against failure scenarios including CrashLoopBackOff, ImagePullBackOff, and OOMKilled pods."
     },
     {
-      "title": "Predictive auto-scaling",
-      "content": "Trained a lightweight LSTM model on historical Prometheus metrics to forecast resource demand 5 minutes ahead. The system triggers Horizontal Pod Autoscaler adjustments proactively, before load spikes hit."
+      "title": "Multi-agent incident investigation",
+      "content": "Developed specialized agents to analyze logs, metrics, and Kubernetes events. Coordinated their execution through LangGraph, maintaining shared incident state and combining their findings into a unified investigation."
     },
     {
-      "title": "Multi-cluster management",
-      "content": "Designed a namespace-isolated architecture allowing a single KubeMind instance to manage multiple clusters via kubeconfig context switching, with per-cluster RBAC."
+      "title": "Cross-signal correlation",
+      "content": "Implemented a correlation agent that brings together evidence from different observability signals to support incident diagnosis and help explain the context behind Kubernetes failures."
     },
     {
-      "title": "Alerting engine",
-      "content": "Configurable threshold-based and anomaly-based alerts with webhook notifications. Alert history stored in PostgreSQL with full audit trail."
+      "title": "Automated incident reporting",
+      "content": "Generated structured incident reports and postmortem-style summaries from the agents' findings, making investigation results easier to review and understand through the platform dashboard."
+    },
+    {
+      "title": "Observability and scenario testing",
+      "content": "Integrated Prometheus, Loki, and Promtail to provide metrics and logs for incident analysis. Evaluated the approach across three controlled incident scenarios and compared OpenAI, Gemini, and Ollama-based models."
     }
   ],
   "metrics": [
-    { "label": "Scaling reaction time", "value": "-5 min" },
-    { "label": "Dashboard refresh", "value": "< 1s" },
-    { "label": "Clusters managed", "value": "Multi" },
-    { "label": "Alert latency", "value": "< 3s" }
+    {
+      "label": "AI agents",
+      "value": "3+"
+    },
+    {
+      "label": "Incident scenarios evaluated",
+      "value": "3"
+    },
+    {
+      "label": "Observability signals",
+      "value": "3"
+    },
+    {
+      "label": "Incident output",
+      "value": "Postmortems"
+    }
   ],
   "challenges": [
-    "Designing a ML model light enough to run alongside cluster workloads without adding meaningful overhead — solved by using a compressed LSTM with a 15-min rolling window instead of a full time-series database scan.",
-    "WebSocket state synchronization across multiple cluster contexts — solved by a per-cluster event bus with client-side reconciliation.",
-    "Making Helm deployment truly one-command for any cluster size — required extensive templating and conditional resource generation."
+    "Correlating heterogeneous observability data — addressed through specialized agents and a correlation agent that combines findings from events, logs, and metrics.",
+    "Coordinating multi-agent investigations — addressed with LangGraph orchestration and shared incident state.",
+    "Evaluating model suitability for incident analysis — addressed by comparing OpenAI, Gemini, and Ollama across three controlled incident scenarios."
   ],
   "learnings": [
-    "Production Kubernetes internals — controllers, informers, admission webhooks",
-    "Time-series forecasting with LSTM on operational metrics",
-    "Designing for operator experience, not just functionality"
+    "Kubernetes troubleshooting using events, logs, and resource metrics",
+    "Building multi-agent AI workflows with LangChain and LangGraph",
+    "Event-driven architecture with Kafka and observability pipelines",
+    "Designing incident investigation workflows and structured postmortem generation",
+    "Evaluating LLMs for infrastructure troubleshooting tasks"
   ]
-},
+}
+,
 {
   "slug": "promptcraft",
   "title": "PromptCraft",
