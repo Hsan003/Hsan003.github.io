@@ -3,10 +3,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Github, BookOpen } from "lucide-react"
+import { ExternalLink, Github, BookOpen, CirclePlay } from "lucide-react"
 import { useScrollFade } from "@/hooks/use-scroll-animation"
 import Link from "next/link"
 import { projects } from "@/data/projects"
+import { ConfidentialBadge } from "@/components/confidential-badge"
+import { isPlaceholder } from "@/lib/utils"
+import { getVideoEmbed } from "@/lib/video"
+import { ProjectPublicationBadge } from "@/components/publication"
 
 export function Projects() {
   const { ref: headerRef, isVisible: headerVisible } = useScrollFade()
@@ -39,7 +43,7 @@ export function Projects() {
               <div className="aspect-video overflow-hidden">
                 <img
                   src={project.image || "/placeholder.svg"}
-                  alt={project.title}
+                  alt={`${project.title} project preview`}
                   onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.svg" }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -48,57 +52,33 @@ export function Projects() {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <CardTitle className="text-xl mb-2">{project.title}</CardTitle>
-                    <div className="flex items-center gap-2 mb-3">
-                      <Badge variant="secondary" className="animate-pulse-glow">
-                        {project.category}
-                      </Badge>
-                      <span className="text-sm text-muted-foreground">{project.period}</span>
-                    </div>
+                    {(project.category || project.period) && (
+                      <div className="flex items-center gap-2 mb-3 flex-wrap">
+                        {project.category && (
+                          <Badge variant="secondary" className="animate-pulse-glow whitespace-normal text-left">
+                            {project.category}
+                          </Badge>
+                        )}
+                        {project.period && <span className="text-sm text-muted-foreground">{project.period}</span>}
+                      </div>
+                    )}
+                    <ProjectPublicationBadge slug={project.slug} className="mb-3" />
                   </div>
-                  <div className="flex gap-2">
-                    {project.github ? (
+                  <div className="flex gap-2 flex-shrink-0">
+                    {project.confidential ? (
+                      <ConfidentialBadge />
+                    ) : project.githubUrl ? (
                       <Button
                         asChild
                         size="icon"
                         variant="outline"
                         className="hover:animate-scale-in transition-all duration-300 bg-transparent"
                       >
-                        <a href={project.github} target="_blank" rel="noopener noreferrer">
+                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} on GitHub`}>
                           <Github className="w-4 h-4" />
                         </a>
                       </Button>
-                    ) : (
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        disabled
-                        className="opacity-50 cursor-not-allowed bg-transparent"
-                      >
-                        <Github className="w-4 h-4" />
-                      </Button>
-                    )}
-
-                    {project.demo ? (
-                      <Button
-                        asChild
-                        size="icon"
-                        variant="outline"
-                        className="hover:animate-scale-in transition-all duration-300 bg-transparent"
-                      >
-                        <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="w-4 h-4" />
-                        </a>
-                      </Button>
-                    ) : (
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        disabled
-                        className="opacity-50 cursor-not-allowed bg-transparent"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </Button>
-                    )}
+                    ) : null}
                   </div>
                 </div>
               </CardHeader>
@@ -106,7 +86,7 @@ export function Projects() {
               <CardContent>
                 <p className="text-muted-foreground mb-4 text-pretty">{project.description}</p>
                 <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech, i) => (
+                  {project.technologies.filter((tech) => !isPlaceholder(tech)).map((tech, i) => (
                     <Badge
                       key={i}
                       variant="outline"
@@ -117,14 +97,39 @@ export function Projects() {
                   ))}
                 </div>
 
-                {project.hasDetailPage && (
-                  <div className="mt-4 pt-4 border-t border-border">
-                    <Button asChild size="sm" className="gap-2">
-                      <Link href={`/projects/${project.slug}`}>
-                        <BookOpen className="w-3.5 h-3.5" />
-                        View case study
-                      </Link>
-                    </Button>
+                {(project.hasDetailPage || project.liveUrl || project.demoVideoUrl) && (
+                  <div className="mt-4 pt-4 border-t border-border flex flex-wrap gap-2">
+                    {project.hasDetailPage && (
+                      <Button asChild size="sm" className="gap-2">
+                        <Link href={`/projects/${project.slug}`}>
+                          <BookOpen className="w-3.5 h-3.5" />
+                          View case study
+                        </Link>
+                      </Button>
+                    )}
+                    {project.liveUrl && (
+                      <Button asChild size="sm" variant="outline" className="gap-2 bg-transparent">
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          Live demo
+                        </a>
+                      </Button>
+                    )}
+                    {project.demoVideoUrl && (
+                      <Button asChild size="sm" variant="outline" className="gap-2 bg-transparent">
+                        {project.hasDetailPage && getVideoEmbed(project.demoVideoUrl) ? (
+                          <Link href={`/projects/${project.slug}#demo`}>
+                            <CirclePlay className="w-3.5 h-3.5" />
+                            Watch demo
+                          </Link>
+                        ) : (
+                          <a href={project.demoVideoUrl} target="_blank" rel="noopener noreferrer">
+                            <CirclePlay className="w-3.5 h-3.5" />
+                            Watch demo
+                          </a>
+                        )}
+                      </Button>
+                    )}
                   </div>
                 )}
               </CardContent>

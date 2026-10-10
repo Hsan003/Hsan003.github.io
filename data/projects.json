@@ -1,5 +1,190 @@
 [
+{
+  "slug": "asksahera",
+  "title": "AskSahera",
+  "tagline": "A bilingual (FR/EN) medical RAG chatbot grounded in peer-reviewed literature",
+  "description": "A bilingual (FR/EN) medical RAG chatbot that answers questions grounded in scientific literature, with a dual-source ingestion pipeline for PubMed articles and research PDFs.",
+  "technologies": [
+    "Express.js",
+    "Node.js",
+    "Qdrant",
+    "OpenAI Embeddings",
+    "Claude",
+    "Cloudflare R2",
+    "Python",
+    "GROBID",
+    "PubMed XML"
+  ],
+  "category": "Professional Project - Applicare",
+  "period": "Jun 2026 – Aug 2026",
+  "image": "/images/projects/asksahera.png",
+  "githubUrl": "",
+  "confidential": true,
+  "liveUrl": "",
+  "demoVideoUrl": "",
+  "hasDetailPage": true,
+  "context": "AskSahera is an educational health assistant built for Applicare during my AI engineering internship. Users ask questions in plain language about perimenopause and auricular acupressure, and the bot answers from a curated corpus of ~100 scientific source documents, citing the passages it relied on. It never diagnoses or prescribes.\n\nThe audience is mainly French-speaking, while almost all of the scientific literature is in English. The assistant therefore has to accept colloquial French as well as English, retrieve English passages for a French question, and answer in the user's language with a medical disclaimer in that same language.",
+  "problem": "How do you answer colloquial French and English health questions from a mostly English scientific corpus, keeping every clinical or numerical claim grounded in a retrieved passage, answers short, and medical-safety rules enforced?",
+  "architecture": [
+    "Express.js (Node.js) backend with route groups for chat, corpus management (extract, upload, ingest, delete) and diagnostics",
+    "Cloudflare R2 for source PDFs and every derived artifact: canonical PDF copy, normalized article JSON and processing metadata",
+    "Self-hosted GROBID service converting PDFs into structured TEI XML; NCBI E-utilities for PubMed abstracts",
+    "Qdrant vector store: one cosine-distance collection, with the thematic domain stored in each point's payload",
+    "Configurable embedding provider (OpenAI or Gemini) and Claude for answer generation and ingestion-time table summaries",
+    "Extraction (PDF/XML → normalized JSON) and indexing (JSON → Qdrant) kept as separate steps, so the corpus can be re-chunked or re-embedded without re-running GROBID or the LLM"
+  ],
+  "sectionGroups": [
     {
+      "title": "Ingestion pipeline",
+      "sections": [
+        {
+          "title": "Two sources, one schema",
+          "content": "PubMed abstracts are fetched through a MeSH-based query in throttled batches and parsed from EFetch XML; full-text PDFs go through GROBID and a TEI parser that extracts sections, references, tables and figures. Both parsers feed a single validated Article factory, so a malformed document fails at parse time instead of silently during chunking."
+        },
+        {
+          "title": "IMRAD-aware chunking",
+          "content": "Body text is chunked section by section following the paper's structure (Introduction / Methods / Results / Discussion), and a chunk never mixes two sections. Within a section, a recursive splitter acts as a sliding window (2,000 characters, 15% overlap). Short abstracts stay whole, tiny fragments are merged and boundary duplicates are trimmed."
+        },
+        {
+          "title": "Table summarization",
+          "content": "Clinical results often live only in tables, which embed poorly. At extraction time each table is summarized once by Claude into short prose with exact figures, and the summary is stored with the article, so re-indexing never repeats the LLM cost. Fallback summaries are tagged and excluded from the index."
+        },
+        {
+          "title": "Idempotent upsert",
+          "content": "Texts are embedded in batches and upserted into Qdrant with deterministic point IDs (a hash of article ID and chunk index), so re-ingesting an article overwrites its points instead of duplicating them. Source fingerprints stored in R2 let unchanged documents be skipped after a cheap HEAD request."
+        }
+      ]
+    },
+    {
+      "title": "Retrieval & generation",
+      "sections": [
+        {
+          "title": "Multi-domain retrieval",
+          "content": "The corpus is split into thematic domains. Instead of one unfiltered search, the system runs a domain-filtered Qdrant search per domain (top-20 each) and merges the lists with Reciprocal Rank Fusion, so one dense domain cannot crowd out another. A lightweight hybrid rerank (vector score plus lexical overlap) keeps the top 5 passages."
+        },
+        {
+          "title": "Grounded generation",
+          "content": "Claude receives the five numbered passages with their title, year, journal and section. Every clinical or numerical claim must cite a passage, inventing statistics is forbidden, and answers are trimmed to about 200 words. A post-generation check verifies that every citation points to a supplied passage."
+        },
+        {
+          "title": "Bilingual FR/EN handling",
+          "content": "A lightweight heuristic detects the user's language, which selects the disclaimer and the reply language. French questions are matched against English passages through the multilingual embedding space, and a dedicated diagnostic script compares results for paired English and colloquial French questions."
+        },
+        {
+          "title": "Safety checks",
+          "content": "The medical disclaimer is appended in code, never left to the model. After generation, a terminology check, the citation-range check and a regex safety filter (cure guarantees, advice to stop treatment, etc.) run on every answer, and violations are logged and returned as warnings."
+        }
+      ]
+    }
+  ],
+  "metrics": [
+    { "label": "Source documents", "value": "~100" },
+    { "label": "Ingestion sources", "value": "2" },
+    { "label": "Passages per answer", "value": "Top 5" },
+    { "label": "Languages", "value": "FR / EN" }
+  ],
+  "challenges": [
+    "Two very different source formats feeding one pipeline — PubMed returns abstract-only XML while GROBID returns full-text TEI with nested sections. Both parsers now feed one validated schema, with shared XML helpers for parser quirks, so chunking, embedding and indexing are fully source-agnostic.",
+    "Tables hold the clinical results but embed badly — solved with LLM table summarization at extraction time, strict JSON output with exact figures, defensive parsing, and a tagged fallback that is kept out of the index.",
+    "Reprocessing the whole corpus on every refresh — solved with source fingerprints stored in R2, skip-if-unchanged checks, per-document failure records instead of aborted batches, and deterministic vector IDs that make re-ingestion an upsert.",
+    "PDF extraction noise degrading chunks — captions repeated in body text, citation markers and tiny fragments are stripped, normalized or merged before chunking.",
+    "Moving from live PubMed search to a real vector index — the chat path was rebuilt as embed → Qdrant → fuse → rerank → prompt, in one shared function used by both the HTTP route and the evaluation script."
+  ],
+  "outcome": "AskSahera turns PubMed abstracts and full-text research PDFs into one normalized, IMRAD-aware index, and answers French or English questions with short, cited responses backed by server-side citation, safety and disclaimer checks. Because extraction and indexing are separate, idempotent steps, the corpus can be refreshed, re-chunked or re-embedded without paying for GROBID or table summaries again."
+},
+{
+  "slug": "kubemind",
+  "title": "KubeMind",
+  "tagline": "AI-Driven Kubernetes Incident Analysis & Observability Platform",
+  "description": "Final-year capstone project — an AI-powered platform that analyzes Kubernetes incidents by correlating cluster events, application logs, and resource metrics. Uses specialized AI agents to investigate failures, identify potential root causes, and generate structured incident reports and postmortems.",
+  "technologies": [
+    "Kubernetes",
+    "Python",
+    "FastAPI",
+    "Next.js",
+    "LangChain",
+    "LangGraph",
+    "Prometheus",
+    "Loki",
+    "Promtail",
+    "Kafka",
+    "MongoDB",
+    "Docker",
+    "Grafana"
+  ],
+  "category": "End-of-Year Project",
+  "period": "2026",
+  "image": "/kubemind-platform.png",
+  "githubUrl": "https://github.com/Hsan003/kubemind",
+  "liveUrl": "",
+  "demoVideoUrl": "",
+  "hasDetailPage": true,
+  "context": "Troubleshooting Kubernetes incidents often requires engineers to investigate events, application logs, and resource metrics across different observability tools. Connecting these signals manually can be time-consuming and makes identifying the root cause of failures more difficult.",
+  "problem": "How can AI agents correlate Kubernetes events, logs, and metrics to help engineers investigate incidents, identify relevant evidence, and produce actionable postmortem reports?",
+  "architecture": [
+    "FastAPI backend for incident analysis and service orchestration",
+    "Kafka-based event pipeline using the kube-events topic",
+    "Prometheus for metrics collection and Loki with Promtail for log aggregation",
+    "Specialized AI agents for analyzing Kubernetes events, logs, and metrics",
+    "LangChain and LangGraph for agent orchestration, shared incident state, and cross-signal correlation",
+    "MongoDB for incident-related data and analysis results",
+    "Next.js dashboard for presenting incident investigations and reports",
+    "Docker and Minikube for containerized development and Kubernetes testing"
+  ],
+  "sections": [
+    {
+      "title": "Kubernetes event pipeline",
+      "content": "Built an event-processing pipeline that captures Kubernetes events and publishes them to Kafka for downstream incident analysis. Tested against failure scenarios including CrashLoopBackOff, ImagePullBackOff, and OOMKilled pods."
+    },
+    {
+      "title": "Multi-agent incident investigation",
+      "content": "Developed specialized agents to analyze logs, metrics, and Kubernetes events. Coordinated their execution through LangGraph, maintaining shared incident state and combining their findings into a unified investigation."
+    },
+    {
+      "title": "Cross-signal correlation",
+      "content": "Implemented a correlation agent that brings together evidence from different observability signals to support incident diagnosis and help explain the context behind Kubernetes failures."
+    },
+    {
+      "title": "Automated incident reporting",
+      "content": "Generated structured incident reports and postmortem-style summaries from the agents' findings, making investigation results easier to review and understand through the platform dashboard."
+    },
+    {
+      "title": "Observability and scenario testing",
+      "content": "Integrated Prometheus, Loki, and Promtail to provide metrics and logs for incident analysis. Evaluated the approach across three controlled incident scenarios and compared OpenAI, Gemini, and Ollama-based models."
+    }
+  ],
+  "metrics": [
+    {
+      "label": "AI agents",
+      "value": "3+"
+    },
+    {
+      "label": "Incident scenarios evaluated",
+      "value": "3"
+    },
+    {
+      "label": "Observability signals",
+      "value": "3"
+    },
+    {
+      "label": "Incident output",
+      "value": "Postmortems"
+    }
+  ],
+  "challenges": [
+    "Correlating heterogeneous observability data — addressed through specialized agents and a correlation agent that combines findings from events, logs, and metrics.",
+    "Coordinating multi-agent investigations — addressed with LangGraph orchestration and shared incident state.",
+    "Evaluating model suitability for incident analysis — addressed by comparing OpenAI, Gemini, and Ollama across three controlled incident scenarios."
+  ],
+  "learnings": [
+    "Kubernetes troubleshooting using events, logs, and resource metrics",
+    "Building multi-agent AI workflows with LangChain and LangGraph",
+    "Event-driven architecture with Kafka and observability pipelines",
+    "Designing incident investigation workflows and structured postmortem generation",
+    "Evaluating LLMs for infrastructure troubleshooting tasks"
+  ]
+},
+{
     "slug": "multi-tenant-ai-chatbot-widget",
     "title": "Multi-Tenant AI Chatbot Widget",
     "tagline": "A secure, embeddable AI chatbot for multi-tenant websites with strict domain validation and Shadow DOM isolation.",
@@ -19,9 +204,10 @@
     ],
     "category": "Personal Project",
     "period": "2025–2026",
-    "image": "/images/project-placeholder.jpg",
-    "github": "https://github.com/Hsan003/AI-Assistant-Backend",
-    "demo": "",
+    "image": "/images/projects/chatbot-widget.png",
+    "githubUrl": "https://github.com/Hsan003/AI-Assistant-Backend",
+    "liveUrl": "",
+    "demoVideoUrl": "",
     "hasDetailPage": true,
     "heroSummary": "A production-focused AI chatbot widget built for secure client-side embedding across multiple tenant websites, with strict origin validation, isolated rendering, and a backend that keeps sensitive logic on the server.",
     "highlights": [
@@ -92,109 +278,32 @@
       "Shadow DOM is an effective tool for preserving UI consistency on untrusted host pages."
     ]
   },
-  {
-  "slug": "kubemind",
-  "title": "KubeMind",
-  "tagline": "AI-Driven Kubernetes Incident Analysis & Observability Platform",
-  "description": "Final-year capstone project — an AI-powered platform that analyzes Kubernetes incidents by correlating cluster events, application logs, and resource metrics. Uses specialized AI agents to investigate failures, identify potential root causes, and generate structured incident reports and postmortems.",
-  "technologies": [
-    "Kubernetes",
-    "Python",
-    "FastAPI",
-    "Next.js",
-    "LangChain",
-    "LangGraph",
-    "Prometheus",
-    "Loki",
-    "Promtail",
-    "Kafka",
-    "MongoDB",
-    "Docker",
-    "Grafana"
-  ],
-  "category": "Final Year Project",
-  "period": "2026",
-  "image": "/kubemind-platform.png",
-  "github": "https://github.com/Hsan003/kubemind",
-  "demo": "",
-  "hasDetailPage": true,
-  "context": "Troubleshooting Kubernetes incidents often requires engineers to investigate events, application logs, and resource metrics across different observability tools. Connecting these signals manually can be time-consuming and makes identifying the root cause of failures more difficult.",
-  "problem": "How can AI agents correlate Kubernetes events, logs, and metrics to help engineers investigate incidents, identify relevant evidence, and produce actionable postmortem reports?",
-  "architecture": [
-    "FastAPI backend for incident analysis and service orchestration",
-    "Kafka-based event pipeline using the kube-events topic",
-    "Prometheus for metrics collection and Loki with Promtail for log aggregation",
-    "Specialized AI agents for analyzing Kubernetes events, logs, and metrics",
-    "LangChain and LangGraph for agent orchestration, shared incident state, and cross-signal correlation",
-    "MongoDB for incident-related data and analysis results",
-    "Next.js dashboard for presenting incident investigations and reports",
-    "Docker and Minikube for containerized development and Kubernetes testing"
-  ],
-  "sections": [
-    {
-      "title": "Kubernetes event pipeline",
-      "content": "Built an event-processing pipeline that captures Kubernetes events and publishes them to Kafka for downstream incident analysis. Tested against failure scenarios including CrashLoopBackOff, ImagePullBackOff, and OOMKilled pods."
-    },
-    {
-      "title": "Multi-agent incident investigation",
-      "content": "Developed specialized agents to analyze logs, metrics, and Kubernetes events. Coordinated their execution through LangGraph, maintaining shared incident state and combining their findings into a unified investigation."
-    },
-    {
-      "title": "Cross-signal correlation",
-      "content": "Implemented a correlation agent that brings together evidence from different observability signals to support incident diagnosis and help explain the context behind Kubernetes failures."
-    },
-    {
-      "title": "Automated incident reporting",
-      "content": "Generated structured incident reports and postmortem-style summaries from the agents' findings, making investigation results easier to review and understand through the platform dashboard."
-    },
-    {
-      "title": "Observability and scenario testing",
-      "content": "Integrated Prometheus, Loki, and Promtail to provide metrics and logs for incident analysis. Evaluated the approach across three controlled incident scenarios and compared OpenAI, Gemini, and Ollama-based models."
-    }
-  ],
-  "metrics": [
-    {
-      "label": "AI agents",
-      "value": "3+"
-    },
-    {
-      "label": "Incident scenarios evaluated",
-      "value": "3"
-    },
-    {
-      "label": "Observability signals",
-      "value": "3"
-    },
-    {
-      "label": "Incident output",
-      "value": "Postmortems"
-    }
-  ],
-  "challenges": [
-    "Correlating heterogeneous observability data — addressed through specialized agents and a correlation agent that combines findings from events, logs, and metrics.",
-    "Coordinating multi-agent investigations — addressed with LangGraph orchestration and shared incident state.",
-    "Evaluating model suitability for incident analysis — addressed by comparing OpenAI, Gemini, and Ollama across three controlled incident scenarios."
-  ],
-  "learnings": [
-    "Kubernetes troubleshooting using events, logs, and resource metrics",
-    "Building multi-agent AI workflows with LangChain and LangGraph",
-    "Event-driven architecture with Kafka and observability pipelines",
-    "Designing incident investigation workflows and structured postmortem generation",
-    "Evaluating LLMs for infrastructure troubleshooting tasks"
-  ]
-}
-,
+{
+  "slug": "darmode",
+  "title": "DarMode",
+  "tagline": "E-commerce demo store with an embedded AI shopping assistant",
+  "description": "An e-commerce demo store with an embedded AI shopping assistant that answers product questions and helps customers find items.",
+  "technologies": ["Next.js", "Tailwind CSS", "TypeScript", "Supabase"],
+  "category": "Personal Project",
+  "period": "",
+  "image": "/images/projects/darmode.png",
+  "githubUrl": "",
+  "liveUrl": "",
+  "demoVideoUrl": "",
+  "hasDetailPage": false
+},
 {
   "slug": "promptcraft",
   "title": "PromptCraft",
   "tagline": "AI-powered NFT generation and trading platform with real-time auctions",
   "description": "A full-stack NFT marketplace where users generate unique digital art via AI prompts, then list or auction their creations in real time. Features a live bidding system, wallet integration, and a GraphQL API powering both the marketplace and the generation pipeline.",
   "technologies": ["Vue.js", "Velzon", "NestJS", "WebSocket", "GraphQL", "REST API", "SSE", "Python", "PostgreSQL"],
-  "category": "Personal Project",
+  "category": "Academic Project",
   "period": "May 2025 - June 2025",
   "image": "/nft-marketplace-platform-with-ai-generation.jpg",
-  "github": "https://github.com/Hsan003/prompt-craft-back",
-  "demo": "",
+  "githubUrl": "https://github.com/Hsan003/prompt-craft-back",
+  "liveUrl": "",
+  "demoVideoUrl": "",
   "hasDetailPage": true,
   "context": "NFT marketplaces like OpenSea require users to bring pre-generated art. PromptCraft collapses the creation and trading workflow into a single platform — you describe what you want, the AI generates it, and you can immediately list it for sale or auction.",
   "problem": "How do you build a system that keeps auction state perfectly synchronized across all connected bidders in real time, while handling the latency of AI image generation without blocking the user experience?",
@@ -251,8 +360,9 @@
   "category": "Academic Project",
   "period": "January 2025 - February 2025",
   "image": "/uptime-monitoring-dashboard-analytics.jpg",
-  "github": "https://github.com/Hsan003/Monitoring.git",
-  "demo": "",
+  "githubUrl": "https://github.com/Hsan003/Monitoring.git",
+  "liveUrl": "",
+  "demoVideoUrl": "",
   "hasDetailPage": false
 },
 {
@@ -264,8 +374,9 @@
   "category": "Academic Project",
   "period": "October 2024 - November 2024",
   "image": "/programming-coaching-platform-dashboard.jpg",
-  "github": "https://github.com/Hsan003/CP-Online-Coach.git",
-  "demo": "",
+  "githubUrl": "https://github.com/Hsan003/CP-Online-Coach.git",
+  "liveUrl": "",
+  "demoVideoUrl": "",
   "hasDetailPage": false
 },
 {
@@ -277,7 +388,9 @@
   "category": "Academic Project",
   "period": "2023 - 2024",
   "image": "/football-field-booking-app-interface.jpg",
-  "github": "https://github.com/Hsan003/Takwira.git",
-  "demo": "",
+  "githubUrl": "https://github.com/Hsan003/Takwira.git",
+  "liveUrl": "",
+  "demoVideoUrl": "",
   "hasDetailPage": false
-}]
+}
+]

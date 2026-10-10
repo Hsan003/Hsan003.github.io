@@ -1,17 +1,21 @@
-import type { Project } from "@/data/projects"
+import type { Project, ProjectMetric } from "@/data/projects"
 
 interface Props {
   project: Project
 }
 
 export function ProjectMetrics({ project }: Props) {
-  if (!project.metrics || project.metrics.length === 0) return null
+  return <MetricsGrid metrics={project.metrics} />
+}
+
+export function MetricsGrid({ metrics }: { metrics?: ProjectMetric[] }) {
+  if (!metrics || metrics.length === 0) return null
 
   return (
     <section className="py-10 px-4 sm:px-6 lg:px-8 bg-muted/30">
       <div className="max-w-4xl mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {project.metrics.map((metric, i) => (
+          {metrics.map((metric, i) => (
             <div
               key={i}
               className="bg-card border border-border rounded-xl p-4 text-center hover:border-primary/40 transition-colors"

@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CheckCircle, Lightbulb, Code2, AlertTriangle } from "lucide-react"
-import type { Project } from "@/data/projects"
+import { CheckCircle, Lightbulb, Code2, AlertTriangle, Target } from "lucide-react"
+import type { Project, ProjectSection } from "@/data/projects"
 
 interface Props {
   project: Project
@@ -73,27 +73,13 @@ export function ProjectBody({ project }: Props) {
 
         {/* Feature sections */}
         {project.sections && project.sections.length > 0 && (
-          <div>
-            <h2 className="text-2xl font-bold mb-6">Key features</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {project.sections.map((section, i) => (
-                <Card key={i} className="hover:shadow-md transition-shadow">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
-                      {section.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground leading-relaxed text-pretty">
-                      {section.content}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
+          <SectionGrid title="Key features" sections={project.sections} />
         )}
+
+        {/* Grouped sections (e.g. Ingestion pipeline / Retrieval & generation) */}
+        {project.sectionGroups?.map((group) => (
+          <SectionGrid key={group.title} title={group.title} sections={group.sections} />
+        ))}
 
         {/* Challenges */}
         {project.challenges && project.challenges.length > 0 && (
@@ -138,7 +124,45 @@ export function ProjectBody({ project }: Props) {
           </div>
         )}
 
+        {/* Outcome */}
+        {project.outcome && (
+          <div>
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+              <Target className="w-5 h-5 text-primary" />
+              Outcome
+            </h2>
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-sm text-muted-foreground leading-relaxed text-pretty">{project.outcome}</p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
       </div>
     </section>
+  )
+}
+
+function SectionGrid({ title, sections }: { title: string; sections: ProjectSection[] }) {
+  return (
+    <div>
+      <h2 className="text-2xl font-bold mb-6">{title}</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {sections.map((section, i) => (
+          <Card key={i} className="hover:shadow-md transition-shadow">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                {section.title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground leading-relaxed text-pretty">{section.content}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
   )
 }

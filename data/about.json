@@ -1,29 +1,36 @@
 {
-  "intro": "I am a final-year Software Engineering student at the National Institute of Applied Sciences and Technology (INSAT) in Tunisia. I build fullstack web applications and AI-powered systems for real users, and I am open to an end-of-studies internship opportunity starting February 2027.",
+  "intro": "I'm a final-year software engineering student at INSAT in Tunis, and most of what I build sits where product engineering meets AI and infrastructure. On the product side, I ship full-stack applications with React/Next.js and FastAPI or Node. On the AI side, I design RAG pipelines and multi-agent systems with LangChain and LangGraph — from document ingestion and chunking strategy to retrieval and evaluation. On the infrastructure side, I work with Docker, Kubernetes, Kafka and observability stacks like Prometheus and Loki, which is what my Kubemind project builds on. Beyond code, I've led student teams of up to 40 people and organized events with 1,500+ participants, so I'm comfortable owning a project end to end and working across roles. I'm looking for an end-of-studies internship starting February 2027, ideally in Europe, in software engineering, AI engineering or SRE/DevOps.",
   "highlights": [
     {
       "icon": "Code",
-      "title": "Frontend Development",
-      "description": "Building modern, responsive user interfaces",
-      "skills": ["React", "Vue.js", "Next.js", "JavaScript", "HTML5", "CSS3"]
-    },
-    {
-      "icon": "Server",
-      "title": "Backend Development",
-      "description": "Creating robust server-side applications",
-      "skills": ["FastAPI", "NestJS", "PHP", "ASP.NET Core", "Python"]
-    },
-    {
-      "icon": "Database",
-      "title": "Database & DevOps",
-      "description": "Managing data and deployment workflows",
-      "skills": ["MySQL", "MongoDB", "SQL Server", "Docker", "Git"]
+      "title": "Full-stack Engineering",
+      "description": "Shipping complete web applications, from responsive interfaces to the APIs and data models behind them."
     },
     {
       "icon": "Cpu",
-      "title": "AI & Innovation",
-      "description": "Integrating artificial intelligence solutions",
-      "skills": ["Python", "RAG", "Pinecone", "Text Embedding", "WebSocket"]
+      "title": "AI & RAG Systems",
+      "description": "Designing RAG pipelines and multi-agent workflows, from document ingestion and chunking to retrieval and evaluation."
+    },
+    {
+      "icon": "Server",
+      "title": "DevOps & Observability",
+      "description": "Containerizing and running services on Kubernetes, with event pipelines, metrics and logs to understand what happens in production."
+    },
+    {
+      "icon": "Users",
+      "title": "Leadership & Ownership",
+      "description": "Leading student teams and owning projects end to end, from planning to delivery."
     }
+  ],
+  "researchInterests": [
+    "LLM agents for infrastructure operations (AIOps)",
+    "Retrieval-augmented generation and its evaluation",
+    "Document understanding for scientific literature",
+    "Observability and reliability of distributed systems"
+  ],
+  "languages": [
+    { "name": "French", "level": "Bilingual" },
+    { "name": "English", "level": "Fluent, Professional" },
+    { "name": "Arabic", "level": "Native" }
   ]
 }

@@ -5,7 +5,7 @@
       "company": "Applicare",
       "type": "Internship",
       "period": "Jun 2026 - Aug 2026",
-      "location": "Tunis, Tunisia",
+      "location": "Canada (Remote)",
       "description": [
         "Designed and built AskSahera, a bilingual (FR/EN) production RAG chatbot indexing ~100 source documents",
         "Built a dual-source ingestion pipeline (PubMed XML + GROBID PDF parsing) with IMRAD-aware chunking and a sliding-window fallback, normalized into a shared schema",
@@ -21,7 +21,7 @@
       "location": "Tunis, Tunisia",
       "description": [
         "Engineered a production chatbot platform (YAML-configurable) used by non-technical users to create 20+ bot variants",
-        "Built a RAG engine (Pinecone) reaching 94% semantic accuracy across a large document set; optimized embeddings to cut latency 45%",
+        "Built a Pinecone-based RAG engine delivering accurate semantic retrieval over a large document corpus; optimized embeddings to cut query latency by 45%",
         "Built an automated testing framework, cutting the QA cycle 50%"
       ],
       "technologies": ["Python", "FastAPI", "Pinecone", "RAG", "Testing", "Docker"]
@@ -38,31 +38,19 @@
         "Implemented a Docker CI/CD pipeline, cutting infra setup time 75%"
       ],
       "technologies": ["FastAPI", "React", "Next.js", "MongoDB", "Docker", "Git", "CI/CD"]
-    }
-  ],
-  "associativeExperience": [
-    {
-      "title": "Event Mission Leader",
-      "organization": "Junior Enterprise INSAT",
-      "period": "August 2024 - June 2025",
-      "description": "Organized the INSAT Enterprise Forum 6.0 (30+ companies, 1500+ participants)",
-      "achievements": [
-        "Coordinated and managed the organizing team",
-        "Led strategic planning, monitored activities, and managed documentation"
-      ],
-      "logoDark": "/je-insat-logo-dark.png",
-      "logoLight": "/je-insat-logo-light.png"
     },
     {
-      "title": "Operations Manager, WinterCup 7.0",
-      "organization": "ACM INSAT",
-      "period": "February 2025 - March 2025",
-      "description": "Managed the programming competition (150+ participants)",
-      "achievements": [
-        "Coordinated teams and event logistics",
-        "Implemented and monitored operational procedures"
+      "title": "Front-end Developer",
+      "company": "Steros",
+      "type": "Internship",
+      "period": "Jul 2024 - Aug 2024",
+      "location": "Sfax, Tunisia",
+      "description": [
+        "Built a showcase website promoting a new company service using HTML, CSS, JavaScript and PHP",
+        "Designed a fully responsive layout and integrated interactive features",
+        "Focused on usability and a smooth, fluid user experience"
       ],
-      "logo": "/acm-logo.png"
+      "technologies": ["HTML5", "CSS3", "JavaScript", "PHP"]
     }
   ]
 }

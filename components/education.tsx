@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { GraduationCap, MapPin, Calendar } from "lucide-react"
 import { useScrollFade } from "@/hooks/use-scroll-animation"
 import educationData from "@/data/education.json"
+import { FallbackImage } from "@/components/fallback-image"
 
 export function Education() {
   const { ref: headerRef, isVisible: headerVisible } = useScrollFade()
@@ -41,9 +42,17 @@ export function Education() {
               <CardContent className="p-6">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 animate-pulse-glow">
-                      <GraduationCap className="w-6 h-6 text-primary" />
-                    </div>
+                    {/* Institution logo on a light tile so it reads in both themes; falls back to the icon if missing */}
+                    <FallbackImage
+                      src={item.logo}
+                      alt={`${item.short || item.institution} logo`}
+                      className="w-16 h-16 rounded-lg bg-white p-1 object-contain flex-shrink-0 border border-border"
+                      fallback={
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 animate-pulse-glow">
+                          <GraduationCap className="w-6 h-6 text-primary" aria-hidden="true" />
+                        </div>
+                      }
+                    />
                     <div className="flex-1">
                       <div className="flex items-center gap-2 flex-wrap mb-1">
                         <h3 className="font-semibold text-lg">{item.degree}</h3>

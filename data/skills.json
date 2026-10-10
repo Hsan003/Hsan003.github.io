@@ -5,10 +5,9 @@
     "skills": [
       { "name": "React", "level": "Expert" },
       { "name": "Next.js", "level": "Expert" },
-      { "name": "Vue.js", "level": "Advanced" },
-      { "name": "TypeScript", "level": "Advanced" },
       { "name": "Tailwind CSS", "level": "Expert" },
-      { "name": "HTML5 / CSS3", "level": "Expert" }
+      { "name": "TypeScript", "level": "Advanced" },
+      { "name": "Vue.js", "level": "Advanced" }
     ]
   },
   {
@@ -17,34 +16,53 @@
     "skills": [
       { "name": "Python", "level": "Expert" },
       { "name": "FastAPI", "level": "Expert" },
+      { "name": "Node.js", "level": "Advanced" },
       { "name": "NestJS", "level": "Advanced" },
-      { "name": "ASP.NET Core", "level": "Intermediate" },
       { "name": "PHP / Symfony", "level": "Advanced" },
-      { "name": "Node.js", "level": "Advanced" }
+      { "name": "WebSocket", "level": "Advanced" },
+      { "name": "ASP.NET Core", "level": "Intermediate" },
+      { "name": "Java", "level": "Intermediate" }
     ]
   },
   {
-    "title": "Database & DevOps",
+    "title": "AI & LLM",
+    "icon": "🧠",
+    "skills": [
+      { "name": "LLM Integration", "level": "Expert" },
+      { "name": "RAG Pipelines & Embeddings", "level": "Expert" },
+      { "name": "LangChain / LangGraph", "level": "Advanced" },
+      { "name": "Qdrant", "level": "Advanced" },
+      { "name": "Pinecone", "level": "Advanced" }
+    ]
+  },
+  {
+    "title": "Data & Messaging",
     "icon": "🗄",
     "skills": [
       { "name": "MongoDB", "level": "Advanced" },
       { "name": "MySQL / SQL Server", "level": "Advanced" },
+      { "name": "Supabase", "level": "Advanced" },
+      { "name": "Kafka", "level": "Intermediate" }
+    ]
+  },
+  {
+    "title": "DevOps",
+    "icon": "🚀",
+    "skills": [
+      { "name": "Git / GitHub", "level": "Expert" },
       { "name": "Docker", "level": "Advanced" },
       { "name": "Kubernetes", "level": "Intermediate" },
-      { "name": "Git / GitHub", "level": "Expert" },
+      { "name": "ArgoCD", "level": "Intermediate" },
       { "name": "CI/CD", "level": "Intermediate" }
     ]
   },
   {
-    "title": "AI & Tooling",
-    "icon": "🧠",
+    "title": "Observability",
+    "icon": "📈",
     "skills": [
-      { "name": "RAG Pipelines", "level": "Advanced" },
-      { "name": "Pinecone", "level": "Advanced" },
-      { "name": "Text Embedding", "level": "Advanced" },
-      { "name": "LLM Integration", "level": "Advanced" },
-      { "name": "Prometheus / Grafana", "level": "Intermediate" },
-      { "name": "WebSocket", "level": "Advanced" }
+      { "name": "Prometheus", "level": "Intermediate" },
+      { "name": "Grafana", "level": "Intermediate" },
+      { "name": "Grafana Loki", "level": "Intermediate" }
     ]
   }
 ]

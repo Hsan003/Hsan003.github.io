@@ -4,21 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, MapPin } from "lucide-react"
 import { useScrollFade } from "@/hooks/use-scroll-animation"
-import { useTheme } from "next-themes"
-import Image from "next/image"
 import experienceData from "@/data/experience.json"
+import { VolunteeringCard } from "@/components/volunteering/volunteering-card"
+import type { MissionWithPhotos } from "@/lib/volunteering-photos"
+import { isPlaceholder } from "@/lib/utils"
 
-export function Experience() {
+export function Experience({ volunteering }: { volunteering: MissionWithPhotos[] }) {
   const { ref: headerRef, isVisible: headerVisible } = useScrollFade()
   const { ref: experiencesRef, isVisible: experiencesVisible } = useScrollFade()
   const { ref: volunteeringRef, isVisible: volunteeringVisible } = useScrollFade()
-  const { theme } = useTheme()
   const experiences = experienceData.experiences
-
-  const associativeExperience = experienceData.associativeExperience.map((item: any) => ({
-    ...item,
-    logo: item.logoDark && theme === "dark" ? item.logoDark : item.logoLight || item.logo,
-  }))
 
   return (
     <section id="experience" className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
@@ -62,10 +57,12 @@ export function Experience() {
                       <Calendar className="w-4 h-4" />
                       <span className="text-sm">{exp.period}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <MapPin className="w-4 h-4" />
-                      <span className="text-sm">{exp.location}</span>
-                    </div>
+                    {!isPlaceholder(exp.location) && (
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <MapPin className="w-4 h-4" />
+                        <span className="text-sm">{exp.location}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </CardHeader>
@@ -89,7 +86,7 @@ export function Experience() {
           ))}
         </div>
 
-        <div ref={volunteeringRef}>
+        <div ref={volunteeringRef} id="volunteering">
           <h3
             className={`text-2xl font-bold mb-8 text-center transition-all duration-600 transform ${
               volunteeringVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
@@ -98,43 +95,18 @@ export function Experience() {
             Volunteering Experience
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {associativeExperience.map((exp, index) => (
-              <Card
-                key={index}
-                className={`hover:shadow-lg transition-all duration-600 hover:scale-105 transform ${
+            {volunteering.map((mission, index) => (
+              <div
+                key={mission.slug}
+                className={`transition-all duration-600 transform ${
                   volunteeringVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
                 }`}
                 style={{
                   transitionDelay: volunteeringVisible ? `${(index + 1) * 200}ms` : "0ms",
                 }}
               >
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full overflow-hidden bg-transparent flex items-center justify-center">
-                      <Image
-                        src={exp.logo || "/placeholder.svg"}
-                        alt={`${exp.organization} logo`}
-                        width={48}
-                        height={48}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-lg">{exp.title}</h4>
-                      <p className="text-primary font-medium">{exp.organization}</p>
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-3">{exp.period}</p>
-                  <p className="text-muted-foreground mb-4">{exp.description}</p>
-                  <ul className="space-y-1">
-                    {exp.achievements.map((achievement: string, i: number) => (
-                      <li key={i} className="text-sm text-muted-foreground">
-                        • {achievement}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
+                <VolunteeringCard mission={mission} />
+              </div>
             ))}
           </div>
         </div>

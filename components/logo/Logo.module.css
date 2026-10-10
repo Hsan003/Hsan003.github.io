@@ -1,0 +1,134 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  border-radius: 0.375rem;
+}
+
+.mark {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* the "he" between the brackets; open by default.
+   2.5ch (not 2ch): the site font is proportional, so "he" can be slightly wider than two "0" glyphs. */
+.he {
+  display: inline-block;
+  overflow: hidden;
+  max-width: 2.5ch;
+  vertical-align: bottom;
+}
+
+/* first paint: </> opens into <he/> */
+.intro {
+  animation: heIntro 700ms cubic-bezier(0.22, 1, 0.36, 1) 350ms both;
+}
+
+/* hover / keyboard focus: collapse to </> and reopen */
+.pulse {
+  animation: hePulse 1100ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+/* continuous: open, pause, collapse, pause, reopen */
+.loop {
+  animation: heLoop 5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* full name between the brackets; hidden by default */
+.name {
+  display: inline-block;
+  overflow: hidden;
+  max-width: 0;
+  opacity: 0;
+  vertical-align: bottom;
+}
+
+.heNameLoop {
+  animation: heNameLoop 8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.nameLoop {
+  animation: nameLoop 8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* <he/> visible → collapses → stays hidden while the name shows → reopens */
+@keyframes heNameLoop {
+  0%, 20%   { max-width: 2ch; opacity: 1; }
+  28%, 72%  { max-width: 0;   opacity: 0; }
+  80%, 100% { max-width: 2ch; opacity: 1; }
+}
+
+/* name hidden → opens after </> → holds → collapses back */
+@keyframes nameLoop {
+  0%, 30%   { max-width: 0;               opacity: 0; }
+  38%, 62%  { max-width: var(--name-w);   opacity: 1; }
+  70%, 100% { max-width: 0;               opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heNameLoop,
+  .nameLoop {
+    animation: none; /* falls back to a static <he/> */
+  }
+}
+
+@keyframes heIntro {
+  from {
+    max-width: 0;
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    max-width: 2.5ch;
+    opacity: 1;
+  }
+}
+
+@keyframes hePulse {
+  0% {
+    max-width: 2.5ch;
+    opacity: 1;
+  }
+  40%,
+  55% {
+    max-width: 0;
+    opacity: 0;
+  }
+  100% {
+    max-width: 2.5ch;
+    opacity: 1;
+  }
+}
+
+@keyframes heLoop {
+  0%,
+  35% {
+    max-width: 2.5ch;
+    opacity: 1;
+  }
+  50%,
+  62% {
+    max-width: 0;
+    opacity: 0;
+  }
+  80%,
+  100% {
+    max-width: 2.5ch;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro,
+  .pulse,
+  .loop {
+    animation: none;
+  }
+}

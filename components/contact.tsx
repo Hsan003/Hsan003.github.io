@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Mail, Phone, MapPin, Github, Linkedin } from "lucide-react"
 import { useScrollFade } from "@/hooks/use-scroll-animation"
+import { AvailabilityLine } from "@/components/availability-panel"
 
 export function Contact() {
   const { ref: headerRef, isVisible: headerVisible } = useScrollFade()
@@ -20,7 +21,13 @@ export function Contact() {
   const contactInfo = [
     { icon: Mail, label: "Email", value: "hsanellouz@gmail.com", href: "mailto:hsanellouz@gmail.com" },
     { icon: Phone, label: "Phone", value: "+216 95 112 002", href: "tel:+21695112002" },
-    { icon: MapPin, label: "Location", value: "Tunis, Tunisia", href: "#" },
+    {
+      icon: MapPin,
+      label: "Location",
+      value: "Tunis, Tunisia",
+      href: "https://www.google.com/maps/search/?api=1&query=Tunis%2C+Tunisia",
+      external: true,
+    },
   ]
 
   const socialLinks = [
@@ -62,6 +69,7 @@ export function Contact() {
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-balance mb-6">Contact Me</h2>
           <p className="text-lg text-muted-foreground">Interested in my profile? Feel free to reach out!</p>
+          <AvailabilityLine className="justify-center mt-4 max-w-3xl mx-auto text-left sm:text-center" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -88,7 +96,11 @@ export function Contact() {
                     </div>
                     <div>
                       <div className="text-sm text-muted-foreground">{item.label}</div>
-                      <a href={item.href} className="font-medium hover:text-primary transition-colors">
+                      <a
+                        href={item.href}
+                        {...("external" in item && item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                        className="font-medium hover:text-primary transition-colors"
+                      >
                         {item.value}
                       </a>
                     </div>

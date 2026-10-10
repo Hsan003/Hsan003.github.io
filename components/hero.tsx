@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react"
 import { useEffect, useState } from "react"
 import Image from "next/image"
+import { AvailabilityPanel } from "@/components/availability-panel"
 
 export function Hero() {
   const [isVisible, setIsVisible] = useState(false)
@@ -41,7 +42,7 @@ export function Hero() {
               <div className="w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden border-4 border-primary/20 shadow-2xl animate-float">
                 <Image
                   src="/professional-photo.jpeg"
-                  alt="Hsan Ellouze - Professional Photo"
+                  alt="Portrait of Hsan Ellouze"
                   width={320}
                   height={320}
                   className="w-full h-full object-cover"
@@ -54,7 +55,7 @@ export function Hero() {
 
           <div className="flex-1 text-center lg:text-left">
             <h1
-              className={`text-4xl sm:text-6xl font-bold text-balance mb-6 font-serif transition-all duration-1000 ${
+              className={`text-4xl sm:text-6xl font-bold text-balance mb-4 font-serif transition-all duration-1000 ${
                 isVisible ? "animate-slide-up opacity-100" : "opacity-0"
               }`}
             >
@@ -64,17 +65,6 @@ export function Hero() {
               </span>
             </h1>
 
-            <div
-              className={`flex justify-center lg:justify-start mb-4 transition-all duration-1000 delay-150 ${
-                isVisible ? "animate-slide-up opacity-100" : "opacity-0"
-              }`}
-            >
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 text-sm font-medium">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                Open to end-of-studies internship — Feb 2027
-              </span>
-            </div>
-
             <p
               className={`text-xl sm:text-2xl text-muted-foreground mb-4 transition-all duration-1000 delay-200 ${
                 isVisible ? "animate-slide-up opacity-100" : "opacity-0"
@@ -82,6 +72,7 @@ export function Hero() {
             >
               Fullstack Developer & AI Engineer
             </p>
+
             <p
               className={`text-lg text-muted-foreground max-w-2xl mx-auto lg:mx-0 text-pretty transition-all duration-1000 delay-300 ${
                 isVisible ? "animate-slide-up opacity-100" : "opacity-0"
@@ -89,9 +80,15 @@ export function Hero() {
             >
               Final-year Software Engineering student at INSAT, Tunisia. I build fullstack
               web applications and AI-powered platforms — from Kubernetes orchestration to
-              RAG-based contract analysis. I am open to an end-of-studies internship opportunity
-              starting February 2027.
+              RAG-based contract analysis.
             </p>
+            <div
+              className={`mb-6 max-w-2xl mx-auto lg:mx-0 transition-all duration-1000 delay-200 ${
+                isVisible ? "animate-slide-up opacity-100" : "opacity-0"
+              }`}
+            >
+              <AvailabilityPanel />
+            </div>
           </div>
         </div>
 
@@ -113,7 +110,7 @@ export function Hero() {
               asChild
               className="hover:animate-pulse-glow transition-all duration-300 bg-transparent"
             >
-              <a href="https://github.com/Hsan003" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/Hsan003" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
                 <Github className="w-5 h-5" />
               </a>
             </Button>
@@ -123,7 +120,7 @@ export function Hero() {
               asChild
               className="hover:animate-pulse-glow transition-all duration-300 bg-transparent"
             >
-              <a href="https://linkedin.com/in/hsanellouze" target="_blank" rel="noopener noreferrer">
+              <a href="https://linkedin.com/in/hsanellouze" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
                 <Linkedin className="w-5 h-5" />
               </a>
             </Button>
@@ -133,7 +130,7 @@ export function Hero() {
               asChild
               className="hover:animate-pulse-glow transition-all duration-300 bg-transparent"
             >
-              <a href="mailto:hsanellouz@gmail.com">
+              <a href="mailto:hsanellouz@gmail.com" aria-label="Send an email">
                 <Mail className="w-5 h-5" />
               </a>
             </Button>

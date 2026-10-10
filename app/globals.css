@@ -80,7 +80,6 @@
   /* Updated font variables to use new Inter and Playfair fonts */
   --font-sans: var(--font-inter);
   --font-serif: var(--font-playfair);
-  --font-dancing: var(--font-dancing);
   --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
 
   /* Added custom animation keyframes for smooth entrance effects */
@@ -211,6 +210,60 @@
   /* Added smooth scrolling for section navigation */
   html {
     scroll-behavior: smooth;
+  }
+
+  /* Keep anchored sections clear of the fixed 4rem header (nav links and /#section deep links) */
+  section[id],
+  #volunteering {
+    scroll-margin-top: 4.5rem;
+  }
+
+  /* Rendered markdown on /writing/[slug] (no typography plugin needed) */
+  .article-body {
+    @apply text-base leading-relaxed text-foreground/90;
+  }
+  .article-body > * + * {
+    @apply mt-5;
+  }
+  .article-body h2 {
+    @apply mt-12 text-2xl font-bold text-foreground;
+  }
+  .article-body h3 {
+    @apply mt-8 text-xl font-semibold text-foreground;
+  }
+  .article-body ul,
+  .article-body ol {
+    @apply pl-6 space-y-2;
+  }
+  .article-body ul {
+    @apply list-disc;
+  }
+  .article-body ol {
+    @apply list-decimal;
+  }
+  .article-body li::marker {
+    @apply text-primary;
+  }
+  .article-body a {
+    @apply text-primary underline underline-offset-4;
+  }
+  .article-body strong {
+    @apply font-semibold text-foreground;
+  }
+  .article-body blockquote {
+    @apply border-l-4 border-primary/40 bg-muted/40 rounded-r-md px-4 py-3 text-muted-foreground;
+  }
+  .article-body code {
+    @apply rounded bg-muted px-1.5 py-0.5 font-mono text-sm;
+  }
+  .article-body pre {
+    @apply overflow-x-auto rounded-lg border border-border bg-muted p-4 text-sm;
+  }
+  .article-body pre code {
+    @apply bg-transparent p-0;
+  }
+  .article-body img {
+    @apply rounded-lg border border-border;
   }
 
   /* Custom utility classes for animations */
